@@ -16,6 +16,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>quick-start</module>
+        <module>chat-dashscope</module>
     </modules>
 
     <properties>

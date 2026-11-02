@@ -7,8 +7,8 @@
 | Day | 主题 | 笔记 | 代码 |
 |-----|------|------|------|
 | 01 | 什么是 LangChain4j | ✅ `notes/day01.md` | —（概念篇） |
-| **02** | **快速入门** | ✅ `notes/day02.md` | ✅ `quick-start/` |
-| 03 | 集成百炼平台 | 待续 | — |
+| 02 | 快速入门 | ✅ `notes/day02.md` | ✅ `quick-start/` |
+| **03** | **集成百炼平台** | ✅ `notes/day03.md` | ✅ `chat-dashscope/` |
 | 04 | AIService | 待续 | — |
 | 05 | Memory | 待续 | — |
 | 06 | Tool / Function Calling | 待续 | — |
@@ -23,11 +23,15 @@ langchain4j/
 ├── README.md
 ├── notes/                    # 每天一份学习笔记
 │   ├── day01.md              # 概念速记
-│   └── day02.md              # quick-start 练习过程
+│   ├── day02.md              # quick-start 练习过程
+│   └── day03.md              # 百炼平台接入
 ├── pom.xml                   # Maven 父 POM，groupId com.caspian
-└── quick-start/              # day02 代码
+├── quick-start/              # day02 代码
+│   ├── pom.xml
+│   └── src/.../com/caspian/quickstart/
+└── chat-dashscope/           # day03 代码
     ├── pom.xml
-    └── src/.../com/caspian/quickstart/
+    └── src/.../com/caspian/chatdashscope/
 ```
 
 ## 运行
@@ -36,14 +40,19 @@ langchain4j/
 # 编译（不触发真实模型调用）
 JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
 mvn -pl quick-start -am compile
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
+mvn -pl chat-dashscope -am compile
 
-# 启动 Spring Boot
+# 启动 Spring Boot（quick-start 默认端口，chat-dashscope 为 8081）
 mvn -pl quick-start spring-boot:run
+mvn -pl chat-dashscope spring-boot:run
 
-# 执行三种模型调用（需要真实 API Key）
+# 执行模型调用（需要真实 API Key）
 mvn -pl quick-start test -Dtest=OpenAiTest
+export DASHSCOPE_API_KEY=你的key
+mvn -pl chat-dashscope test -Dtest=DashScopeTest
 ```
 
 - Java 版本：pom 声明 17，本机用 Homebrew openjdk@17
-- 模型配置走 `application.yaml`，`api-key` 用 `${ENV_VAR:}` 占位
-- 没有外部服务依赖（Redis、向量库等）
+- 模型配置走 `application.yaml`，`api-key` 用 `${ENV_VAR:}` 占位：`quick-start` 用 `langchain4j.open-ai.*`，`chat-dashscope` 用 `langchain4j.community.dashscope.*`
+- 两个模块都不依赖外部服务；`chat-dashscope` 的绘图、语音、视频用例会真实请求百炼并产生费用

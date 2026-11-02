@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: chat-dashscope
+
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        max-tokens: 5000
+        model-name: 'qwen-plus'
+        temperature: 0.7
+      streaming-chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        max-tokens: 5000
+        model-name: 'qwen-plus'
+        temperature: 0.7
+      image-model:
+        enabled: true
+        model-name: wanx-v1
+
+server:
+  port: 8081
