@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: quick-start
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: 'demo'
+      model-name: 'gpt-4o-mini'
+      base-url: 'http://langchain4j.dev/demo/openai/v1'
+server:
+  port: 8080
