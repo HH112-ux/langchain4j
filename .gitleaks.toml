@@ -1,0 +1,10 @@
+# 基于 gitleaks 默认规则，额外放行对环境变量占位符的误报。
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "放行 ${ENV_VAR:} 形式的环境变量占位符"
+regexTarget = "line"
+regexes = [
+  '''\$\{[A-Za-z0-9_]+(:[^\}]*)?\}''',
+]

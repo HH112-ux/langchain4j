@@ -24,8 +24,26 @@ Thumbs.db
 *.log
 logs/
 
+# ===== Secrets =====
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+id_rsa
+id_ed25519
+*.pfx
+*.crt
+
 # ===== Local config =====
 *.local
-.env
-.env.local
 config.local.*
+application-local.*
+application-local.yml
+application-local.yaml
+local.yaml
+local.yml
+local*.yaml
+local*.yml

@@ -56,3 +56,21 @@ mvn -pl chat-dashscope test -Dtest=DashScopeTest
 - Java 版本：pom 声明 17，本机用 Homebrew openjdk@17
 - 模型配置走 `application.yaml`，`api-key` 用 `${ENV_VAR:}` 占位：`quick-start` 用 `langchain4j.open-ai.*`，`chat-dashscope` 用 `langchain4j.community.dashscope.*`
 - 两个模块都不依赖外部服务；`chat-dashscope` 的绘图、语音、视频用例会真实请求百炼并产生费用
+
+## 密钥与提交防护
+
+仓库内不放任何真实凭据，配置一律写 `${DASHSCOPE_API_KEY:}` 这类环境变量占位符。
+
+```bash
+# 一次性安装：启用提交前的密钥扫描
+cp scripts/hooks/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+
+# 手动扫描（工作区 / 历史）
+gitleaks detect --no-git --verbose
+gitleaks detect --verbose
+```
+
+- 规则文件 `.gitleaks.toml`：继承 gitleaks 默认规则，仅放行 `${ENV_VAR:}` 形式的占位符
+- 钩子行为：命中规则即阻止提交；本机未安装 gitleaks 时跳过扫描并给出提示，不阻断正常提交
+- 仓库侧同时开启了 GitHub 的 secret scanning 与 push protection（免费个人仓库若不支持，见提交记录中的说明）

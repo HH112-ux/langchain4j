@@ -1,0 +1,19 @@
+#!/bin/sh
+# 提交前扫描暂存区，命中疑似密钥时阻止提交。
+# 安装：cp scripts/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+set -u
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo .)
+cd "$ROOT" || exit 0
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+    echo "[pre-commit] 未检测到 gitleaks，跳过密钥扫描（brew install gitleaks 后可启用）" >&2
+    exit 0
+fi
+
+if gitleaks protect --staged --redact --verbose --config .gitleaks.toml; then
+    exit 0
+fi
+
+echo "[pre-commit] 检测到疑似密钥，提交已阻止。确认是误报时在 .gitleaks.toml 的 allowlists 中放行。" >&2
+exit 1
