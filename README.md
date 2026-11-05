@@ -1,86 +1,25 @@
 # LangChain4j 学习记录
 
-按天推进的学习笔记与配套练习代码。每完成一天的内容，追加一个 `notes/dayNN.md` 和相应代码模块。
-
-## 当前进度
-
-| Day | 主题 | 笔记 | 代码 |
-|-----|------|------|------|
-| 01 | 什么是 LangChain4j | ✅ `notes/day01.md` | —（概念篇） |
-| 02 | 快速入门 | ✅ `notes/day02.md` | ✅ `quick-start/` |
-| **03** | **集成百炼平台** | ✅ `notes/day03.md` | ✅ `chat-dashscope/` |
-| 04 | AIService（声明式接口） | ✅ `notes/day04.md` | ✅ `ai-services/` |
-| 05 | Memory | 待续 | — |
-| 06 | Tool / Function Calling | 待续 | — |
-| 07 | Spring Boot 集成 | 待续 | — |
-| 08 | RAG | 待续 | — |
+这是我的 LangChain4j 学习记录：按天推进，一天一份笔记、一个对应模块，记录学习过程与练习代码。
 
 ## 目录说明
 
-```
-langchain4j/
-├── .gitignore
-├── README.md
-├── notes/                    # 每天一份学习笔记
-│   ├── day01.md              # 概念速记
-│   ├── day02.md              # quick-start 练习过程
-│   ├── day03.md              # 百炼平台接入
-│   └── day04.md              # AiServices 声明式接口
-├── pom.xml                   # Maven 父 POM，groupId com.caspian
-├── quick-start/              # day02 代码
-│   ├── pom.xml
-│   └── src/.../com/caspian/quickstart/
-├── chat-dashscope/           # day03 代码
-│   ├── pom.xml
-│   └── src/.../com/caspian/chatdashscope/
-└── ai-services/              # day04 代码
-    ├── pom.xml
-    └── src/.../com/caspian/aiservices/
-```
+| 目录 | 说明 |
+|------|------|
+| `notes/` | 每天一篇学习笔记，day01–day04 已记录 |
+| `quick-start/` | day02 的快速入门练习，文本、远程图片、本地图片三种调用方式 |
+| `chat-dashscope/` | day03 的百炼平台接入练习，聊天、流式、绘图、语音、视频 |
+| `ai-services/` | day04 的 AiServices 声明式接口练习，记忆、结构化输出、流式 |
 
-## 运行
+根目录 `pom.xml` 是 Maven 父 POM（groupId `com.caspian`），三个模块由它聚合。
 
-```bash
-# 编译（不触发真实模型调用）
-JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
-mvn -pl quick-start -am compile
-JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
-mvn -pl chat-dashscope -am compile
-JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
-mvn -pl ai-services -am compile
+## 学习进度
 
-# 启动 Spring Boot（quick-start 默认端口，chat-dashscope 为 8081，ai-services 为 8085）
-mvn -pl quick-start spring-boot:run
-mvn -pl chat-dashscope spring-boot:run
-mvn -pl ai-services spring-boot:run
+| 日期 | 主题 | 对应目录 | 要点 |
+|------|------|---------|------|
+| 2026-11-02 | day01 什么是 LangChain4j | `notes/day01.md` | 核心抽象与它解决的问题，概念篇无代码 |
+| 2026-11-02 | day02 快速入门 | `notes/day02.md`、`quick-start/` | 最小可运行调用，含多模态图片输入 |
+| 2026-11-02 | day03 集成百炼平台 | `notes/day03.md`、`chat-dashscope/` | DashScope 多模态接入，异步任务与流式范式 |
+| 2026-11-02 | day04 AiServices | `notes/day04.md`、`ai-services/` | 声明式接口装配记忆、结构化输出与流式回调 |
 
-# 执行模型调用（需要真实 API Key）
-mvn -pl quick-start test -Dtest=OpenAiTest
-export DASHSCOPE_API_KEY=你的key
-mvn -pl chat-dashscope test -Dtest=DashScopeTest
-
-# ai-services 的离线测试不需要 key 和网络
-mvn -pl ai-services -am test
-```
-
-- Java 版本：pom 声明 17，本机用 Homebrew openjdk@17
-- 模型配置走 `application.yaml`，`api-key` 用 `${ENV_VAR:}` 占位：`quick-start` 用 `langchain4j.open-ai.*`，`chat-dashscope` 用 `langchain4j.community.dashscope.*`
-- 三个模块都不依赖外部服务（Redis、向量库等）；`chat-dashscope` 的绘图、语音、视频用例会真实请求百炼并产生费用，`ai-services` 的测试用假模型，全程离线
-
-## 密钥与提交防护
-
-仓库内不放任何真实凭据，配置一律写 `${DASHSCOPE_API_KEY:}` 这类环境变量占位符。
-
-```bash
-# 一次性安装：启用提交前的密钥扫描
-cp scripts/hooks/pre-commit .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
-
-# 手动扫描（工作区 / 历史）
-gitleaks detect --no-git --verbose
-gitleaks detect --verbose
-```
-
-- 规则文件 `.gitleaks.toml`：继承 gitleaks 默认规则，仅放行 `${ENV_VAR:}` 形式的占位符
-- 钩子行为：命中规则即阻止提交；本机未安装 gitleaks 时跳过扫描并给出提示，不阻断正常提交
-- 仓库侧同时开启了 GitHub 的 secret scanning 与 push protection（免费个人仓库若不支持，见提交记录中的说明）
+运行示例前需在环境变量中提供 `DASHSCOPE_API_KEY`，构建使用 JDK 17。
