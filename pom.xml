@@ -17,6 +17,7 @@
     <modules>
         <module>quick-start</module>
         <module>chat-dashscope</module>
+        <module>ai-services</module>
     </modules>
 
     <properties>
