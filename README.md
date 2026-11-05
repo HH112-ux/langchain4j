@@ -9,7 +9,7 @@
 | 01 | 什么是 LangChain4j | ✅ `notes/day01.md` | —（概念篇） |
 | 02 | 快速入门 | ✅ `notes/day02.md` | ✅ `quick-start/` |
 | **03** | **集成百炼平台** | ✅ `notes/day03.md` | ✅ `chat-dashscope/` |
-| 04 | AIService | 待续 | — |
+| 04 | AIService（声明式接口） | ✅ `notes/day04.md` | ✅ `ai-services/` |
 | 05 | Memory | 待续 | — |
 | 06 | Tool / Function Calling | 待续 | — |
 | 07 | Spring Boot 集成 | 待续 | — |
@@ -24,14 +24,18 @@ langchain4j/
 ├── notes/                    # 每天一份学习笔记
 │   ├── day01.md              # 概念速记
 │   ├── day02.md              # quick-start 练习过程
-│   └── day03.md              # 百炼平台接入
+│   ├── day03.md              # 百炼平台接入
+│   └── day04.md              # AiServices 声明式接口
 ├── pom.xml                   # Maven 父 POM，groupId com.caspian
 ├── quick-start/              # day02 代码
 │   ├── pom.xml
 │   └── src/.../com/caspian/quickstart/
-└── chat-dashscope/           # day03 代码
+├── chat-dashscope/           # day03 代码
+│   ├── pom.xml
+│   └── src/.../com/caspian/chatdashscope/
+└── ai-services/              # day04 代码
     ├── pom.xml
-    └── src/.../com/caspian/chatdashscope/
+    └── src/.../com/caspian/aiservices/
 ```
 
 ## 运行
@@ -42,20 +46,26 @@ JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
 mvn -pl quick-start -am compile
 JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
 mvn -pl chat-dashscope -am compile
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
+mvn -pl ai-services -am compile
 
-# 启动 Spring Boot（quick-start 默认端口，chat-dashscope 为 8081）
+# 启动 Spring Boot（quick-start 默认端口，chat-dashscope 为 8081，ai-services 为 8085）
 mvn -pl quick-start spring-boot:run
 mvn -pl chat-dashscope spring-boot:run
+mvn -pl ai-services spring-boot:run
 
 # 执行模型调用（需要真实 API Key）
 mvn -pl quick-start test -Dtest=OpenAiTest
 export DASHSCOPE_API_KEY=你的key
 mvn -pl chat-dashscope test -Dtest=DashScopeTest
+
+# ai-services 的离线测试不需要 key 和网络
+mvn -pl ai-services -am test
 ```
 
 - Java 版本：pom 声明 17，本机用 Homebrew openjdk@17
 - 模型配置走 `application.yaml`，`api-key` 用 `${ENV_VAR:}` 占位：`quick-start` 用 `langchain4j.open-ai.*`，`chat-dashscope` 用 `langchain4j.community.dashscope.*`
-- 两个模块都不依赖外部服务；`chat-dashscope` 的绘图、语音、视频用例会真实请求百炼并产生费用
+- 三个模块都不依赖外部服务（Redis、向量库等）；`chat-dashscope` 的绘图、语音、视频用例会真实请求百炼并产生费用，`ai-services` 的测试用假模型，全程离线
 
 ## 密钥与提交防护
 
