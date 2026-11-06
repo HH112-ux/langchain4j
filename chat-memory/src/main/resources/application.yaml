@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: chat-memory
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+server:
+  port: 8086
+
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        model-name: 'qwen-plus'
+
+chat-memory:
+  # 记忆存储实现：memory 用进程内 Map，redis 用 Redis 持久化
+  store: ${CHAT_MEMORY_STORE:memory}
+
+logging:
+  level:
+    com.caspian.chatmemory: info
