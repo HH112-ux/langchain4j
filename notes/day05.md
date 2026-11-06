@@ -27,6 +27,8 @@
 - 默认的 `SingleSlotChatMemoryStore` 只是把消息挂在内存里，进程一停就没了；换 `InMemoryChatMemoryStore` 也只是多撑了一个进程的生命周期。
 - 真正的持久化要自己实现 `ChatMemoryStore` 三个方法：`getMessages` / `updateMessages` / `deleteMessages`，key 就是 memoryId。
 - Redis 版本的做法很直接：整段消息用 `ChatMessageSerializer.messagesToJson` 转成 JSON 存一个 String 键，读的时候 `ChatMessageDeserializer.messagesFromJson` 反序列化回来，再配一个 TTL 防止旧会话无限堆积。
+- 光写不验等于没写，所以补了 `RedisChatMemoryStoreTest`：用 Docker 临时起 Redis 7.4（映射 6389），实测 4 个用例全绿——写入后读回系统/用户/AI 三种消息的类型与文本都不变；`updateMessages` 是覆盖而不是追加；窗口裁到 4 条后写进 Redis 的确实是 u3–u6；`deleteMessages` 后读不到消息且 `chat:memory:<id>` 键也消失。
+- 没有 Redis 的机器不会因此变红：测试先用 500ms 超时探测端口，连不上就 assume-skip。把端口指向空的 6390 实测 4 个用例全部 skipped，构建仍是 BUILD SUCCESS；有 Redis 时用 `REDIS_PORT=6389 mvn -o test -pl chat-memory -Dtest=RedisChatMemoryStoreTest` 跑真实用例。
 - 但 Redis 不是人人都有，所以做成配置开关：`chat-memory.store=memory` 走内存 Map，`=redis` 才装配 Redis 实现。两者接口一致，上层装配代码一行不改。
 - 如果哪天换成 MySQL，同样只需要再写一个 `ChatMemoryStore` 实现，其余不动。
 
