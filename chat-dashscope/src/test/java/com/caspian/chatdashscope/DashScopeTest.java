@@ -35,6 +35,7 @@ import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.output.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,12 +57,14 @@ import java.util.concurrent.CountDownLatch;
  *     <li>LangChain4j 封装的万相文生图模型 {@link WanxImageModel}</li>
  *     <li>百炼官方 SDK：ImageSynthesis / ImageGeneration / 语音合成 / 语音识别 / 视频生成 / 多模态对话</li>
  * </ol>
- * 所有用例都会真实请求百炼服务，运行前需设置 DASHSCOPE_API_KEY，不要在没有密钥时执行。
+ * 所有用例都会真实请求百炼服务，默认跳过；设置 {@code LIVE_API_TESTS=true}
+ * 并提供 DASHSCOPE_API_KEY 后才会执行。
  *
  * @author caspian
  * @since 2026-11-02
  */
 @SpringBootTest
+@EnabledIfEnvironmentVariable(named = "LIVE_API_TESTS", matches = "true")
 public class DashScopeTest {
 
     @Autowired

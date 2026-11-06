@@ -6,6 +6,7 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
@@ -24,11 +25,13 @@ import java.util.Base64;
  *     <li>{@link #imageTest()} — 远程图片 URL 作为 ImageContent</li>
  *     <li>{@link #imageTest2()} — 本地 cat.jpg 转 Base64 的多模态输入</li>
  * </ul>
+ * 默认跳过；需要真实调用时设置 {@code LIVE_API_TESTS=true} 并确保端点可用。
  *
  * @author caspian
  * @since 2026-11-02
  */
 @SpringBootTest
+@EnabledIfEnvironmentVariable(named = "LIVE_API_TESTS", matches = "true")
 public class OpenAiTest {
 
     @Value("${langchain4j.open-ai.chat-model.api-key}")
