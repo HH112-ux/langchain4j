@@ -19,6 +19,7 @@
         <module>chat-dashscope</module>
         <module>ai-services</module>
         <module>chat-memory</module>
+        <module>chat-tools</module>
     </modules>
 
     <properties>

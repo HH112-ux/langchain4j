@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: chat-tools
+
+server:
+  port: 8087
+
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        model-name: 'qwen-plus'
+        temperature: 0.3
+
+logging:
+  level:
+    com.caspian.chattools: info
