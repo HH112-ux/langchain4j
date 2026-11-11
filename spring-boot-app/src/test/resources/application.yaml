@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-boot-app
+
+# 离线测试不配置 langchain4j.community.dashscope.*，
+# DashScope 自动配置因缺少 api-key 属性而不会创建真实模型 bean，
+# 模型改由 support/TestModelsConfig 提供的假实现替代。
+logging:
+  level:
+    com.caspian.springboot: info

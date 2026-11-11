@@ -1,0 +1,18 @@
+# 真实调用专用：仅在 -Dspring.profiles.active=live 且 LIVE_API_TESTS=true 时使用。
+# 该文件补齐 api-key 属性，DashScope starter 才会创建 qwenChatModel 与
+# qwenStreamingChatModel 两个真实 bean。
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        base-url: "${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/api/v1}"
+        model-name: 'qwen-plus'
+        temperature: 0.7
+        max-tokens: 5000
+      streaming-chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        base-url: "${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/api/v1}"
+        model-name: 'qwen-plus'
+        temperature: 0.7
+        max-tokens: 5000
