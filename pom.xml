@@ -20,6 +20,7 @@
         <module>ai-services</module>
         <module>chat-memory</module>
         <module>chat-tools</module>
+        <module>spring-boot-app</module>
     </modules>
 
     <properties>

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: spring-boot-app
+
+server:
+  port: 8088
+
+langchain4j:
+  community:
+    dashscope:
+      # 两个模型都只靠配置装配：starter 检测到 api-key 属性后才会创建
+      # qwenChatModel / qwenStreamingChatModel 这两个 bean。
+      chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        base-url: "${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/api/v1}"
+        model-name: 'qwen-plus'
+        temperature: 0.7
+        max-tokens: 5000
+      streaming-chat-model:
+        api-key: "${DASHSCOPE_API_KEY:}"
+        base-url: "${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/api/v1}"
+        model-name: 'qwen-plus'
+        temperature: 0.7
+        max-tokens: 5000
+
+logging:
+  level:
+    com.caspian.springboot: info
