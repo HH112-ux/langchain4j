@@ -6,15 +6,16 @@
 
 | 目录 | 说明 |
 |------|------|
-| `notes/` | 每天一篇学习笔记，day01–day07 已记录 |
+| `notes/` | 每天一篇学习笔记，day01–day08 已记录 |
 | `quick-start/` | day02 的快速入门练习，文本、远程图片、本地图片三种调用方式 |
 | `chat-dashscope/` | day03 的百炼平台接入练习，聊天、流式、绘图、语音、视频 |
 | `ai-services/` | day04 的 AiServices 声明式接口练习，记忆、结构化输出、流式 |
 | `chat-memory/` | day05 的记忆练习，窗口裁剪、多会话隔离、Redis 持久化 |
 | `chat-tools/` | day06 的工具调用练习，`@Tool` 声明、低级别手动链路、动态工具与兜底 |
 | `spring-boot-app/` | day07 的 Spring Boot 集成练习，starter 自动配置、`@AiService`、SSE 流式 |
+| `chat-rag/` | day08 的 RAG 练习，文档摄入、向量检索、重排与检索增强问答 |
 
-根目录 `pom.xml` 是 Maven 父 POM（groupId `com.caspian`），六个模块由它聚合。
+根目录 `pom.xml` 是 Maven 父 POM（groupId `com.caspian`），七个模块由它聚合。
 
 ## 学习进度
 
@@ -27,5 +28,6 @@
 | 2026-11-06 | day05 记忆 | `notes/day05.md`、`chat-memory/` | 窗口裁剪、`@MemoryId` 多会话隔离、可切换的持久化存储 |
 | 2026-11-08 | day06 工具调用 | `notes/day06.md`、`chat-tools/` | `@Tool` 声明与返回类型、手动两轮链路、动态工具、幻觉与循环兜底 |
 | 2026-11-11 | day07 Spring Boot 集成 | `notes/day07.md`、`spring-boot-app/` | starter 配置驱动模型、`@AiService` 显式装配、SSE 流式与容器记忆 |
+| 2026-11-12 | day08 RAG | `notes/day08.md`、`chat-rag/` | 文档摄入四步、向量检索参数、重排与无命中兜底 |
 
 运行示例前需在环境变量中提供 `DASHSCOPE_API_KEY`，构建使用 JDK 17。
