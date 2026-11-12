@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: chat-rag
+
+server:
+  port: 8089
+
+rag:
+  # dashscope 走真实模型；测试用 RAG_MODELS=fake 切换成假的 ChatModel/EmbeddingModel。
+  models: ${RAG_MODELS:dashscope}
+  dashscope:
+    api-key: "${DASHSCOPE_API_KEY:}"
+    base-url: "${DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com/api/v1}"
+    chat-model: qwen-plus
+    embedding-model: text-embedding-v4
+    embedding-dimension: 1024
+  ingest:
+    # 300 字符、50 字符重叠：中文问答类文档的保守默认值，
+    # 约为课件的 300/30 到 1000/200 之间的折中。
+    chunk-size: 300
+    chunk-overlap: 50
+    docs-pattern: "classpath:docs/*.md"
+  retrieval:
+    # 只取 3 段，避免把无关内容塞进 prompt；0.5 是课件给出的常用阈值。
+    max-results: 3
+    min-score: 0.5
+
+logging:
+  level:
+    com.caspian.rag: info
